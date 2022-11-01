@@ -1,9 +1,10 @@
 package queue
 
 import (
+	"sync"
+
 	"queue-mgr/internal/jobs"
 	"queue-mgr/internal/service"
-	"sync"
 )
 
 func NewQueuer() service.Queuer {

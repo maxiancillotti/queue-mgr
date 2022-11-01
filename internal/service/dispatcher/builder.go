@@ -1,11 +1,11 @@
 package dispatcher
 
 import (
-	"queue-mgr/internal/jobs"
-	"queue-mgr/internal/service"
-
 	"runtime"
 	"time"
+
+	"queue-mgr/internal/jobs"
+	"queue-mgr/internal/service"
 )
 
 const (
