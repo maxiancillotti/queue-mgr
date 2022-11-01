@@ -5,8 +5,8 @@ import (
 	"sync"
 	"time"
 
-	"queue-mgr/internal/jobs"
-	"queue-mgr/internal/service"
+	"github.com/maxiancillotti/queue-mgr/internal/jobs"
+	"github.com/maxiancillotti/queue-mgr/internal/service"
 )
 
 // Dispatcher represents a job dispatcher.

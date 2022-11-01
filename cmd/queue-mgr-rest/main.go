@@ -5,22 +5,21 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
-	"time"
 
-	"queue-mgr/app"
-	"queue-mgr/app/config"
-	"queue-mgr/internal/handlers"
-	"queue-mgr/internal/handlers/middlewares"
-	"queue-mgr/internal/presenter"
-	"queue-mgr/internal/service/datasum"
-	"queue-mgr/internal/service/dispatcher"
-	"queue-mgr/internal/service/queue"
+	"github.com/maxiancillotti/queue-mgr/app"
+	"github.com/maxiancillotti/queue-mgr/app/config"
+	"github.com/maxiancillotti/queue-mgr/internal/handlers"
+	"github.com/maxiancillotti/queue-mgr/internal/handlers/middlewares"
+	"github.com/maxiancillotti/queue-mgr/internal/presenter"
+	"github.com/maxiancillotti/queue-mgr/internal/service/datasum"
+	"github.com/maxiancillotti/queue-mgr/internal/service/dispatcher"
+	"github.com/maxiancillotti/queue-mgr/internal/service/queue"
 
 	"github.com/gorilla/mux"
 )
 
 const (
-	configFileDirName        = "queue-mgr-rest"
+	configFileDirName        = "github.com/maxiancillotti/queue-mgr-rest"
 	enableStrictSlashRouting = true
 )
 
@@ -31,7 +30,7 @@ var (
 	w = datasum.NewDataSumWorker()
 
 	d = dispatcher.NewDispatcherBuilder().
-		SetTimeBetweenJobProcesses(10*time.Second).
+		SetTimeBetweenJobProcesses(configData.Service.TimeBetweenJobProcesses.GetDuration()).
 		BuildDispatcher(w, q)
 
 	p = presenter.NewJSONPresenter()

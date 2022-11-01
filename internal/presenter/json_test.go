@@ -6,8 +6,8 @@ import (
 	"net/http"
 	"net/http/httptest"
 
-	"queue-mgr/internal/handlers/presenter"
-	"queue-mgr/internal/jobs"
+	"github.com/maxiancillotti/queue-mgr/internal/handlers/presenter"
+	"github.com/maxiancillotti/queue-mgr/internal/jobs"
 
 	"testing"
 

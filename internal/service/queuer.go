@@ -1,6 +1,6 @@
 package service
 
-import "queue-mgr/internal/jobs"
+import "github.com/maxiancillotti/queue-mgr/internal/jobs"
 
 // Queue memory repo
 type Queuer interface {

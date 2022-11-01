@@ -4,10 +4,10 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"queue-mgr/internal/handlers/internal"
-	"queue-mgr/internal/handlers/presenter"
-	"queue-mgr/internal/jobs"
-	"queue-mgr/internal/service"
+	"github.com/maxiancillotti/queue-mgr/internal/handlers/internal"
+	"github.com/maxiancillotti/queue-mgr/internal/handlers/presenter"
+	"github.com/maxiancillotti/queue-mgr/internal/jobs"
+	"github.com/maxiancillotti/queue-mgr/internal/service"
 
 	"github.com/pkg/errors"
 )

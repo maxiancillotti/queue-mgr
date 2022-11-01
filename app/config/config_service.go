@@ -1,7 +1,7 @@
 package config
 
 type ServiceConfig struct {
-	TimeBetweenJobProcesses string `toml:"time_between_job_processes" env:"QUEUE_MGR_TIME_BTW_JOB_PROCESSES" env-required`
+	TimeBetweenJobProcesses StrTimeDuration `toml:"time_between_job_processes" env:"QUEUE_MGR_TIME_BTW_JOB_PROCESSES" env-required`
 
 	// Could also add:
 	//maxWorkers // Default CPU cores

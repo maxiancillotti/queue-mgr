@@ -1,8 +1,9 @@
 package datasum
 
 import (
-	"queue-mgr/internal/jobs"
 	"testing"
+
+	"github.com/maxiancillotti/queue-mgr/internal/jobs"
 
 	"github.com/stretchr/testify/assert"
 )

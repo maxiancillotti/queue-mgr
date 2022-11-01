@@ -7,9 +7,9 @@ import (
 	"net/http"
 	"net/http/httptest"
 
-	"queue-mgr/internal/handlers/internal"
-	"queue-mgr/internal/jobs"
-	"queue-mgr/internal/mock"
+	"github.com/maxiancillotti/queue-mgr/internal/handlers/internal"
+	"github.com/maxiancillotti/queue-mgr/internal/jobs"
+	"github.com/maxiancillotti/queue-mgr/internal/mock"
 
 	"testing"
 

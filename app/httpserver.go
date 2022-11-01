@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"time"
 
-	"queue-mgr/app/config"
+	"github.com/maxiancillotti/queue-mgr/app/config"
 
 	"github.com/maxiancillotti/gohttpserver"
 )

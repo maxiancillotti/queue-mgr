@@ -1,4 +1,4 @@
-module queue-mgr
+module github.com/maxiancillotti/queue-mgr
 
 go 1.18
 

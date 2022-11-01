@@ -3,7 +3,7 @@ package mock
 import (
 	"context"
 
-	"queue-mgr/internal/jobs"
+	"github.com/maxiancillotti/queue-mgr/internal/jobs"
 )
 
 type MockDispatcher struct{}

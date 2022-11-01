@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"queue-mgr/internal/handlers/presenter"
+	"github.com/maxiancillotti/queue-mgr/internal/handlers/presenter"
 
 	"github.com/pkg/errors"
 )

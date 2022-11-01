@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"strings"
 
-	"queue-mgr/internal/handlers/internal"
-	"queue-mgr/internal/handlers/presenter"
+	"github.com/maxiancillotti/queue-mgr/internal/handlers/internal"
+	"github.com/maxiancillotti/queue-mgr/internal/handlers/presenter"
 )
 
 type AuthMDW interface {

@@ -3,7 +3,7 @@ package middlewares
 import (
 	"net/http"
 
-	"queue-mgr/internal/mock"
+	"github.com/maxiancillotti/queue-mgr/internal/mock"
 )
 
 var (
