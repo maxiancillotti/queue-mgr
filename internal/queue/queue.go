@@ -6,22 +6,14 @@ import (
 
 type queue struct {
 	jobs          []jobs.Job
-	lastIdx       int
 	lastProcessed int
 }
 
 func (q *queue) Enqueue(job jobs.Job) {
 
 	q.jobs = append(q.jobs, job)
-	q.lastIdx = len(q.jobs) - 1
-	q.jobs[q.lastIdx].ID = q.lastIdx
-}
-
-func (q *queue) RetrieveNext() jobs.Job {
-	// OJO
-	// time.After + select + inyectar parámetro
-
-	return q.jobs[q.lastProcessed+1]
+	queueLen := len(q.jobs)
+	q.jobs[queueLen-1].ID = queueLen
 }
 
 func (q *queue) RetrieveQueue() []jobs.Job {
@@ -34,4 +26,11 @@ func (q *queue) RetrievePendingQueue() []jobs.Job {
 
 func (q *queue) RetrieveProcessedQueue() []jobs.Job {
 	return q.jobs[:q.lastProcessed+1]
+}
+
+func (q *queue) RetrieveNextToProcess() jobs.Job {
+	// OJO
+	// time.After + select + inyectar parámetro
+
+	return q.jobs[q.lastProcessed+1]
 }
