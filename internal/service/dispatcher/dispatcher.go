@@ -23,11 +23,14 @@ type dispatcher struct {
 	// Process the job
 	worker service.Worker
 
+	// Queue repo
+	queuer service.Queuer
+
 	// Needed to run background dequeuing process
 	wg sync.WaitGroup
 }
 
-func (d *dispatcher) StartDequeue(ctx context.Context) {
+func (d *dispatcher) Start(ctx context.Context) {
 	d.wg.Add(1)
 	go d.loop(ctx)
 }
@@ -37,6 +40,7 @@ func (d *dispatcher) Wait() {
 }
 
 func (d *dispatcher) Enqueue(job *jobs.Job) {
+	d.queuer.Enqueue(job)
 	d.jobBuffer <- job
 }
 
@@ -58,21 +62,12 @@ Loop:
 		case job := <-d.jobBuffer:
 			// Increment the waitgroup
 			wg.Add(1)
-
-			// Decrement a semaphore count
-			d.semaphore <- struct{}{}
-
-			// Fire new worker goroutine
-			go func(job *jobs.Job) {
-				defer wg.Done()
-				// After the job finished, increment a semaphore count
-				defer func() { <-d.semaphore }()
-				d.worker.Work(job)
-			}(job)
-
-			// Blocking state until time has passed
-			<-time.After(d.timeBtwJobProc)
+			defer wg.Done()
+			d.worker.Work(job)
+			d.queuer.Dequeue()
 		}
+		// Blocking state until time has passed
+		time.Sleep(d.timeBtwJobProc)
 	}
 	d.stop()
 }

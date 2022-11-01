@@ -7,7 +7,7 @@ import (
 
 type Dispatcher interface {
 	// Starts a dispatcher that stops when it receives a value from ctx.Done.
-	StartDequeue(ctx context.Context)
+	Start(ctx context.Context)
 
 	// Use Wait to block until the dispatcher receives the signal to stop.
 	Wait()

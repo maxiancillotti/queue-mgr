@@ -50,12 +50,13 @@ func (b *dispatcherBuilder) SetTimeBetweenJobProcesses(timebtw time.Duration) *d
 }
 
 // Builds new instance of job dispatcher with the config set or its defaults.
-// Needs a worker to process the job.
-func (b *dispatcherBuilder) BuildDispatcher(worker service.Worker) service.Dispatcher {
+// Needs a worker to process the job and a queuer to save the queue.
+func (b *dispatcherBuilder) BuildDispatcher(worker service.Worker, queuer service.Queuer) service.Dispatcher {
 	return &dispatcher{
 		semaphore:      make(chan struct{}, b.maxWorkers),
 		jobBuffer:      make(chan *jobs.Job, b.queueLen),
 		timeBtwJobProc: b.timeBtwJobProc,
 		worker:         worker,
+		queuer:         queuer,
 	}
 }
