@@ -19,7 +19,7 @@ import (
 )
 
 const (
-	configFileDirName        = "github.com/maxiancillotti/queue-mgr-rest"
+	configFileDirName        = "queue-mgr-rest"
 	enableStrictSlashRouting = true
 )
 

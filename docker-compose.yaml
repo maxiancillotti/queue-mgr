@@ -5,9 +5,9 @@ services:
   api:
     build:
       context: .
-      dockerfile: api.Dockerfile
+      dockerfile: Dockerfile
       args:
-      - CMD_BUILD_DIR=github.com/maxiancillotti/queue-mgr-rest
+      - CMD_BUILD_DIR=queue-mgr-rest
 
     ports:
       - 8001:8001
