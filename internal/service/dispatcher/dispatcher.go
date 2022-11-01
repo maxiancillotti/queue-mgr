@@ -40,6 +40,7 @@ func (d *dispatcher) Wait() {
 }
 
 func (d *dispatcher) Enqueue(job jobs.Job) {
+	job.SetStatusPending()
 	d.queuer.Enqueue(&job)
 	d.jobBuffer <- &job
 }

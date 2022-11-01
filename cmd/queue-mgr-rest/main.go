@@ -5,17 +5,49 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
+	"time"
 
-	"queue-mgr/internal/jobs"
+	"queue-mgr/app"
+	"queue-mgr/app/config"
+	"queue-mgr/internal/handlers"
+	"queue-mgr/internal/handlers/middlewares"
+	"queue-mgr/internal/presenter"
 	"queue-mgr/internal/service/datasum"
 	"queue-mgr/internal/service/dispatcher"
+	"queue-mgr/internal/service/queue"
+
+	"github.com/gorilla/mux"
+)
+
+const (
+	configFileDirName        = "queue-mgr-rest"
+	enableStrictSlashRouting = true
+)
+
+var (
+	configData = config.GetConfig(configFileDirName)
+
+	q = queue.NewQueuer()
+	w = datasum.NewDataSumWorker()
+
+	d = dispatcher.NewDispatcherBuilder().
+		SetTimeBetweenJobProcesses(10*time.Second).
+		BuildDispatcher(w, q)
+
+	p = presenter.NewJSONPresenter()
+
+	c = handlers.NewJobsController(d, q, p)
+
+	prMDW   = middlewares.NewPanicRecoverMiddleware(p)
+	authMDW = middlewares.NewAuthController(p)
+
+	httpRouter = mux.NewRouter().StrictSlash(enableStrictSlashRouting)
 )
 
 func main() {
 
 	/******** Graceful Shutdown ********/
-	//ctx, cancel := context.WithCancel(context.Background())
-	_, cancel := context.WithCancel(context.Background())
+	ctx, cancel := context.WithCancel(context.Background())
 
 	sigCh := make(chan os.Signal, 1)
 	defer close(sigCh)
@@ -27,28 +59,11 @@ func main() {
 		cancel()
 	}()
 
-	/******** INITIALIZING ********/
-	w := datasum.NewDataSumWorker()
+	d.Start(ctx)
 
-	// GET FROM OS.ENV or VIPER LIBRARY
-	//maxWorkers := 10 // Should be no more than CPU cores
-	//buffers := 1000  // Depends on memory
+	setApiRoutes()
+	setRoutesBase()
 
-	//d := dispatcher.NewDispatcher(w, maxWorkers, buffers)
-	//d.Start(ctx)
+	app.StartHttpServer(&configData.HttpServer, CaselessMatcher(httpRouter))
 
-	d := dispatcher.NewDispatcherBuilder().BuildDispatcher(w)
-
-	/******** Dispatching / Queueing ********/
-
-	// Controller layer - Handlers
-	for i := 0; i < 100; i++ {
-		job := &jobs.Job{}
-
-		// Service layer
-		d.Enqueue(job)
-	}
-
-	// No need because of http server
-	d.Wait()
 }

@@ -18,12 +18,20 @@ func (j *Job) SetResult(result string) {
 	j.Result = jobResult(result)
 }
 
+func (j *Job) SetStatusPending() {
+	j.Status = statusPending
+}
+
+func (j *Job) SetStatusProcessed() {
+	j.Status = statusProcessed
+}
+
 func (j *Job) ValidateInput() error {
 
 	if j.Name == "" {
 		return errors.New("name cannot be empty")
 	}
-	if j.Data == nil {
+	if j.Data == nil || len(j.Data) == 0 {
 		return errors.New("data cannot be empty")
 	}
 	return nil

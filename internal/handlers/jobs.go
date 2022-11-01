@@ -47,10 +47,11 @@ type jobsController struct {
 	presenter  presenter.Presenter
 }
 
-func NewJobsController(dispatcher service.Dispatcher, queuer service.Queuer) JobsController {
+func NewJobsController(dispatcher service.Dispatcher, queuer service.Queuer, presenter presenter.Presenter) JobsController {
 	return &jobsController{
 		dispatcher: dispatcher,
 		queuer:     queuer,
+		presenter:  presenter,
 	}
 }
 
@@ -61,11 +62,13 @@ func (c *jobsController) POST(rw http.ResponseWriter, req *http.Request) {
 	err := json.NewDecoder(req.Body).Decode(&job)
 	if err != nil {
 		c.presenter.PresentErrResponse(rw, http.StatusBadRequest, errors.Wrap(err, internal.ErrMsgCannotDecodeJsonReqBody))
+		return
 	}
 
 	err = job.ValidateInput()
 	if err != nil {
 		c.presenter.PresentErrResponse(rw, http.StatusBadRequest, errors.Wrap(err, internal.ErrMsgInvalidInputBody))
+		return
 	}
 
 	c.dispatcher.Enqueue(job)
@@ -86,11 +89,13 @@ func (c *jobsController) GETCollectionByStatus(rw http.ResponseWriter, req *http
 	err := json.NewDecoder(req.Body).Decode(&job)
 	if err != nil {
 		c.presenter.PresentErrResponse(rw, http.StatusBadRequest, errors.Wrap(err, internal.ErrMsgCannotDecodeJsonReqBody))
+		return
 	}
 
 	err = job.ValidateStatusFilter()
 	if err != nil {
 		c.presenter.PresentErrResponse(rw, http.StatusBadRequest, errors.Wrap(err, internal.ErrMsgInvalidInputBody))
+		return
 	}
 
 	var jobs []*jobs.Job
