@@ -2,11 +2,12 @@ package datasum
 
 import (
 	"fmt"
-	"queue-mgr/internal"
+
 	"queue-mgr/internal/jobs"
+	"queue-mgr/internal/service"
 )
 
-func NewDataSumWorker() internal.Worker {
+func NewDataSumWorker() service.Worker {
 	return &datasum{}
 }
 

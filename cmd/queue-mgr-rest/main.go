@@ -4,16 +4,18 @@ import (
 	"context"
 	"os"
 	"os/signal"
-	"queue-mgr/internal/datasum"
-	"queue-mgr/internal/dispatcher"
-	"queue-mgr/internal/jobs"
 	"syscall"
+
+	"queue-mgr/internal/jobs"
+	"queue-mgr/internal/service/datasum"
+	"queue-mgr/internal/service/dispatcher"
 )
 
 func main() {
 
-	// Graceful Shutdown
-	ctx, cancel := context.WithCancel(context.Background())
+	/******** Graceful Shutdown ********/
+	//ctx, cancel := context.WithCancel(context.Background())
+	_, cancel := context.WithCancel(context.Background())
 
 	sigCh := make(chan os.Signal, 1)
 	defer close(sigCh)
@@ -25,16 +27,28 @@ func main() {
 		cancel()
 	}()
 
-	// Dispatching
+	/******** INITIALIZING ********/
 	w := datasum.NewDataSumWorker()
 
-	d := dispatcher.NewDispatcher(w, 10, 1000)
-	d.Start(ctx)
+	// GET FROM OS.ENV or VIPER LIBRARY
+	//maxWorkers := 10 // Should be no more than CPU cores
+	//buffers := 1000  // Depends on memory
 
+	//d := dispatcher.NewDispatcher(w, maxWorkers, buffers)
+	//d.Start(ctx)
+
+	d := dispatcher.NewDispatcherBuilder().BuildDispatcher(w)
+
+	/******** Dispatching / Queueing ********/
+
+	// Controller layer - Handlers
 	for i := 0; i < 100; i++ {
 		job := &jobs.Job{}
-		d.Add(job)
+
+		// Service layer
+		d.Enqueue(job)
 	}
 
+	// No need because of http server
 	d.Wait()
 }

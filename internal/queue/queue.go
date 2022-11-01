@@ -1,6 +1,8 @@
 package queue
 
-import "queue-mgr/internal/jobs"
+import (
+	"queue-mgr/internal/jobs"
+)
 
 type queue struct {
 	jobs          []jobs.Job
@@ -15,6 +17,21 @@ func (q *queue) Enqueue(job jobs.Job) {
 	q.jobs[q.lastIdx].ID = q.lastIdx
 }
 
-func (q *queue) ProcessNext() {
+func (q *queue) RetrieveNext() jobs.Job {
+	// OJO
+	// time.After + select + inyectar parámetro
 
+	return q.jobs[q.lastProcessed+1]
+}
+
+func (q *queue) RetrieveQueue() []jobs.Job {
+	return q.jobs
+}
+
+func (q *queue) RetrievePendingQueue() []jobs.Job {
+	return q.jobs[q.lastProcessed:]
+}
+
+func (q *queue) RetrieveProcessedQueue() []jobs.Job {
+	return q.jobs[:q.lastProcessed+1]
 }

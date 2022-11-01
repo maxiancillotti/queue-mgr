@@ -1,4 +1,4 @@
-package internal
+package service
 
 import "queue-mgr/internal/jobs"
 
