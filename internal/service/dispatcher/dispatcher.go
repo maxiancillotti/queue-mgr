@@ -39,9 +39,9 @@ func (d *dispatcher) Wait() {
 	d.wg.Wait()
 }
 
-func (d *dispatcher) Enqueue(job *jobs.Job) {
-	d.queuer.Enqueue(job)
-	d.jobBuffer <- job
+func (d *dispatcher) Enqueue(job jobs.Job) {
+	d.queuer.Enqueue(&job)
+	d.jobBuffer <- &job
 }
 
 func (d *dispatcher) stop() {

@@ -16,5 +16,5 @@ type Dispatcher interface {
 	// Enqueues a job.
 	// Will block when the quantity of enqueued jobs has already reached to the maximum size,
 	// until other job has been processed and frees up space in the queue.
-	Enqueue(job *jobs.Job)
+	Enqueue(job jobs.Job)
 }
